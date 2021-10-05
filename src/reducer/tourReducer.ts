@@ -7,7 +7,7 @@ export interface TourState {
   tourList: Tour[];
   filteredTourList: Tour[];
   selectedTour: Tour | undefined;
-  status: string;
+  status: "SUCCED" | "LOADING" | "ERROR" | "FAILED" | "";
   error: string;
 }
 
@@ -46,20 +46,19 @@ export const counterSlice = createSlice({
   },
   extraReducers: {
     [fetchTourList.pending.type]: (state, action) => {
-      state.status = "loading";
+      state.status = "LOADING";
     },
     [fetchTourList.fulfilled.type]: (state, action) => {
-      state.status = "succeeded";
-      state.tourList.push(...action.payload);
+      state.status = "SUCCED";
+      state.tourList = action.payload;
     },
     [fetchTourList.rejected.type]: (state, action) => {
-      state.status = "failed";
+      state.status = "FAILED";
       state.error = action.error.message;
     },
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { setTourList, updateTourList, setSelectedTour } =
   counterSlice.actions;
 

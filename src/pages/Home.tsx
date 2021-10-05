@@ -26,17 +26,13 @@ import { useEffect } from "react";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
-  const [tours, setTours] = useState<Tour[]>([]);
-
-  useIonViewWillEnter(() => {
-    const msgs = getTours();
-    setTours(msgs);
-  });
+  const { tourList, status } = useSelector(
+    (state: RootState) => state.tourState
+  );
 
   const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
+    dispatch(fetchTourList());
+    if (status !== "LOADING") e.detail.complete();
   };
 
   useEffect(() => {
@@ -62,8 +58,8 @@ const Home: React.FC = () => {
         </IonHeader>
 
         <IonList>
-          {tours.map((m) => (
-            <TourListItem key={m.id} tour={m} />
+          {tourList.map((tour) => (
+            <TourListItem key={tour.id} tour={tour} />
           ))}
         </IonList>
       </IonContent>
