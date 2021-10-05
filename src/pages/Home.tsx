@@ -5,6 +5,7 @@ import {
   setTourList,
   updateTourList,
   setSelectedTour,
+  fetchTourList,
 } from "../reducer/tourReducer";
 import { useState } from "react";
 import { getTours } from "../data/tours";
@@ -39,7 +40,7 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(setTourList(getTours()));
+    dispatch(fetchTourList());
   }, []);
 
   return (
