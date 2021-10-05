@@ -7,8 +7,6 @@ import {
   setSelectedTour,
   fetchTourList,
 } from "../reducer/tourReducer";
-import { useState } from "react";
-import { getTours } from "../data/tours";
 import {
   IonContent,
   IonHeader,
@@ -21,8 +19,6 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import "./Home.css";
-import { Tour } from "../types/tourType";
-import { useEffect } from "react";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,9 +31,9 @@ const Home: React.FC = () => {
     if (status !== "LOADING") e.detail.complete();
   };
 
-  useEffect(() => {
+  useIonViewWillEnter(() => {
     dispatch(fetchTourList());
-  }, []);
+  });
 
   return (
     <IonPage id="home-page">

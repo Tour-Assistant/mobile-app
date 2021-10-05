@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { getTour } from "../data/tours";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
+import TourListItem from "../components/TourListItem";
+import {
+  setTourList,
+  updateTourList,
+  setSelectedTour,
+  fetchTourList,
+} from "../reducer/tourReducer";
 import {
   IonBackButton,
   IonButtons,
@@ -19,12 +28,13 @@ import "./ViewTour.css";
 import { Tour } from "../types/tourType";
 
 function ViewTour() {
-  const [tour, setTour] = useState<Tour>();
-  const params = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
+
+  const dispatch = useDispatch();
+  const { selectedTour } = useSelector((state: RootState) => state.tourState);
 
   useIonViewWillEnter(() => {
-    const msg = getTour("1");
-    setTour(msg);
+    dispatch(setSelectedTour(id));
   });
 
   return (
@@ -38,15 +48,15 @@ function ViewTour() {
       </IonHeader>
 
       <IonContent fullscreen>
-        {tour ? (
+        {selectedTour ? (
           <>
             <IonItem>
               <IonIcon icon={personCircle} color="primary"></IonIcon>
               <IonLabel className="ion-text-wrap">
                 <h2>
-                  {tour.title}
+                  {selectedTour.title}
                   <span className="date">
-                    <IonNote>{tour.title}</IonNote>
+                    <IonNote>{selectedTour.title}</IonNote>
                   </span>
                 </h2>
                 <h3>
@@ -56,7 +66,7 @@ function ViewTour() {
             </IonItem>
 
             <div className="ion-padding">
-              <h1>{tour.title}</h1>
+              <h1>{selectedTour.title}</h1>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut

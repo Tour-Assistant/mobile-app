@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import { Tour } from "../types/tourType";
 
 export interface TourState {
@@ -23,9 +22,8 @@ export const fetchTourList = createAsyncThunk(
   "tours/fetchTourList",
   async () => {
     const response = await axios.get(
-      "https://tour-api.my-tour-assistant.com/v1/tours"
+      "https://tour-api-dev.my-tour-assistant.com/v1/tours"
     );
-    console.log(response.data);
     return response.data as Tour[];
   }
 );
@@ -40,8 +38,10 @@ export const counterSlice = createSlice({
     updateTourList: (state, action: PayloadAction<Tour[]>) => {
       state.filteredTourList = action.payload;
     },
-    setSelectedTour: (state, action: PayloadAction<Tour>) => {
-      state.selectedTour = action.payload;
+    setSelectedTour: (state, action: PayloadAction<Tour["id"]>) => {
+      state.selectedTour = state.tourList.find(
+        ({ id }) => id === action.payload
+      );
     },
   },
   extraReducers: {
