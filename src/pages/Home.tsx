@@ -1,4 +1,11 @@
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 import TourListItem from "../components/TourListItem";
+import {
+  setTourList,
+  updateTourList,
+  setSelectedTour,
+} from "../reducer/tourReducer";
 import { useState } from "react";
 import { getTours } from "../data/tours";
 import {
@@ -14,8 +21,10 @@ import {
 } from "@ionic/react";
 import "./Home.css";
 import { Tour } from "../types/tourType";
+import { useEffect } from "react";
 
 const Home: React.FC = () => {
+  const dispatch = useDispatch();
   const [tours, setTours] = useState<Tour[]>([]);
 
   useIonViewWillEnter(() => {
@@ -28,6 +37,10 @@ const Home: React.FC = () => {
       e.detail.complete();
     }, 3000);
   };
+
+  useEffect(() => {
+    dispatch(setTourList(getTours()));
+  }, []);
 
   return (
     <IonPage id="home-page">

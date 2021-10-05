@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import tourReducer from "./reducer/tourReducer";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    tourState: tourReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
