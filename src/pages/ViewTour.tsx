@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Message, getMessage } from '../data/messages';
+import { useState } from "react";
+import { getTour } from "../data/tours";
 import {
   IonBackButton,
   IonButtons,
@@ -12,22 +12,23 @@ import {
   IonPage,
   IonToolbar,
   useIonViewWillEnter,
-} from '@ionic/react';
-import { personCircle } from 'ionicons/icons';
-import { useParams } from 'react-router';
-import './ViewMessage.css';
+} from "@ionic/react";
+import { personCircle } from "ionicons/icons";
+import { useParams } from "react-router";
+import "./ViewTour.css";
+import { Tour } from "../types/tourType";
 
-function ViewMessage() {
-  const [message, setMessage] = useState<Message>();
+function ViewTour() {
+  const [tour, setTour] = useState<Tour>();
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
-    const msg = getMessage(parseInt(params.id, 10));
-    setMessage(msg);
+    const msg = getTour("1");
+    setTour(msg);
   });
 
   return (
-    <IonPage id="view-message-page">
+    <IonPage id="view-tour-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
@@ -37,15 +38,15 @@ function ViewMessage() {
       </IonHeader>
 
       <IonContent fullscreen>
-        {message ? (
+        {tour ? (
           <>
             <IonItem>
               <IonIcon icon={personCircle} color="primary"></IonIcon>
               <IonLabel className="ion-text-wrap">
                 <h2>
-                  {message.fromName}
+                  {tour.title}
                   <span className="date">
-                    <IonNote>{message.date}</IonNote>
+                    <IonNote>{tour.title}</IonNote>
                   </span>
                 </h2>
                 <h3>
@@ -55,7 +56,7 @@ function ViewMessage() {
             </IonItem>
 
             <div className="ion-padding">
-              <h1>{message.subject}</h1>
+              <h1>{tour.title}</h1>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -75,4 +76,4 @@ function ViewMessage() {
   );
 }
 
-export default ViewMessage;
+export default ViewTour;

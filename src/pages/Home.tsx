@@ -1,6 +1,6 @@
-import MessageListItem from '../components/MessageListItem';
-import { useState } from 'react';
-import { Message, getMessages } from '../data/messages';
+import TourListItem from "../components/TourListItem";
+import { useState } from "react";
+import { getTours } from "../data/tours";
 import {
   IonContent,
   IonHeader,
@@ -10,17 +10,17 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter
-} from '@ionic/react';
-import './Home.css';
+  useIonViewWillEnter,
+} from "@ionic/react";
+import "./Home.css";
+import { Tour } from "../types/tourType";
 
 const Home: React.FC = () => {
-
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [tours, setTours] = useState<Tour[]>([]);
 
   useIonViewWillEnter(() => {
-    const msgs = getMessages();
-    setMessages(msgs);
+    const msgs = getTours();
+    setTours(msgs);
   });
 
   const refresh = (e: CustomEvent) => {
@@ -33,7 +33,7 @@ const Home: React.FC = () => {
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
+          <IonTitle>Upcoming</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -43,14 +43,14 @@ const Home: React.FC = () => {
 
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">
-              Inbox
-            </IonTitle>
+            <IonTitle size="large">Upcoming</IonTitle>
           </IonToolbar>
         </IonHeader>
 
         <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
+          {tours.map((m) => (
+            <TourListItem key={m.id} tour={m} />
+          ))}
         </IonList>
       </IonContent>
     </IonPage>

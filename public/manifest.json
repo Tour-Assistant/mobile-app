@@ -1,6 +1,6 @@
 {
-  "short_name": "Ionic App",
-  "name": "My Ionic App",
+  "short_name": "Tour Assistant",
+  "name": "My Tour Assistant",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
