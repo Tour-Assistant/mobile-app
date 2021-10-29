@@ -1,12 +1,12 @@
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
-import TourListItem from "../components/TourListItem";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store';
+import TourListItem from '../components/TourListItem';
 import {
   setTourList,
   updateTourList,
   setSelectedTour,
-  fetchTourList,
-} from "../reducer/tourReducer";
+  fetchTourList
+} from '../reducer/tourReducer';
 import {
   IonContent,
   IonHeader,
@@ -16,9 +16,9 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
-} from "@ionic/react";
-import "./Home.css";
+  useIonViewWillEnter
+} from '@ionic/react';
+import './Home.css';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
 
   const refresh = (e: CustomEvent) => {
     dispatch(fetchTourList());
-    if (status !== "LOADING") e.detail.complete();
+    if (status !== 'LOADING') e.detail.complete();
   };
 
   useIonViewWillEnter(() => {
@@ -36,25 +36,25 @@ const Home: React.FC = () => {
   });
 
   return (
-    <IonPage id="home-page">
+    <IonPage id='home-page'>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Upcoming</IonTitle>
+          <IonTitle>Upcoming Tour List</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonRefresher slot="fixed" onIonRefresh={refresh}>
+        <IonRefresher slot='fixed' onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <IonHeader collapse="condense">
+        <IonHeader collapse='condense'>
           <IonToolbar>
-            <IonTitle size="large">Upcoming</IonTitle>
+            <IonTitle size='large'>Upcoming Tour List</IonTitle>
           </IonToolbar>
         </IonHeader>
 
         <IonList>
-          {tourList.map((tour) => (
+          {tourList.map(tour => (
             <TourListItem key={tour.id} tour={tour} />
           ))}
         </IonList>

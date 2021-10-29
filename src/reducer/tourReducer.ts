@@ -1,12 +1,14 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { Tour } from "../types/tourType";
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { HostAuthority, HostedBy, Tour } from '../types/tourType';
 
 export interface TourState {
   tourList: Tour[];
   filteredTourList: Tour[];
   selectedTour: Tour | undefined;
-  status: "SUCCED" | "LOADING" | "ERROR" | "FAILED" | "";
+  selectedHostedBy: HostedBy | undefined;
+  showContactModal: boolean;
+  status: 'SUCCEED' | 'LOADING' | 'ERROR' | 'FAILED' | '';
   error: string;
 }
 
@@ -14,22 +16,24 @@ const initialState: TourState = {
   tourList: [],
   filteredTourList: [],
   selectedTour: undefined,
-  status: "",
-  error: "",
+  selectedHostedBy: undefined,
+  showContactModal: false,
+  status: '',
+  error: ''
 };
 
 export const fetchTourList = createAsyncThunk(
-  "tours/fetchTourList",
+  'tours/fetchTourList',
   async () => {
     const response = await axios.get(
-      "https://tour-api-dev.my-tour-assistant.com/v1/tours"
+      'https://tour-api.my-tour-assistant.com/v1/tours'
     );
     return response.data as Tour[];
   }
 );
 
-export const counterSlice = createSlice({
-  name: "tourState",
+export const tourSlice = createSlice({
+  name: 'tourState',
   initialState,
   reducers: {
     setTourList: (state, action: PayloadAction<Tour[]>) => {
@@ -38,28 +42,42 @@ export const counterSlice = createSlice({
     updateTourList: (state, action: PayloadAction<Tour[]>) => {
       state.filteredTourList = action.payload;
     },
-    setSelectedTour: (state, action: PayloadAction<Tour["id"]>) => {
+    setSelectedTour: (state, action: PayloadAction<Tour['id']>) => {
       state.selectedTour = state.tourList.find(
         ({ id }) => id === action.payload
       );
     },
+    setSelectedHostedBy: (
+      state,
+      action: PayloadAction<HostedBy | undefined>
+    ) => {
+      state.selectedHostedBy = action.payload;
+    },
+    setShowContactModal: (state, action: PayloadAction<boolean>) => {
+      state.showContactModal = action.payload;
+    }
   },
   extraReducers: {
     [fetchTourList.pending.type]: (state, action) => {
-      state.status = "LOADING";
+      state.status = 'LOADING';
     },
     [fetchTourList.fulfilled.type]: (state, action) => {
-      state.status = "SUCCED";
+      state.status = 'SUCCEED';
       state.tourList = action.payload;
     },
     [fetchTourList.rejected.type]: (state, action) => {
-      state.status = "FAILED";
+      state.status = 'FAILED';
       state.error = action.error.message;
-    },
-  },
+    }
+  }
 });
 
-export const { setTourList, updateTourList, setSelectedTour } =
-  counterSlice.actions;
+export const {
+  setTourList,
+  updateTourList,
+  setSelectedTour,
+  setSelectedHostedBy,
+  setShowContactModal
+} = tourSlice.actions;
 
-export default counterSlice.reducer;
+export default tourSlice.reducer;

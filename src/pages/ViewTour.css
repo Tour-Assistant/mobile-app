@@ -12,7 +12,7 @@
   font-weight: 600;
 }
 
-#view-tour-page ion-item .date {
+#view-tour-page ion-item .right-item {
   float: right;
   align-items: center;
   display: flex;

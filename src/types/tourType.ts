@@ -1,4 +1,18 @@
-export type EVENT_STATUS = "UPCOMING" | "CLOSED";
+export type EVENT_STATUS = 'UPCOMING' | 'CLOSED';
+
+export interface HostAuthority {
+  name: string;
+  phone: string;
+}
+
+export interface HostedBy {
+  name: string;
+  link: {
+    page: string;
+    group: string;
+  };
+  authorities: HostAuthority[];
+}
 
 export interface Tour {
   id: string;
@@ -6,11 +20,11 @@ export interface Tour {
   reference: string;
   eventStatus: EVENT_STATUS;
   startAt: string;
-  details?: {
-    content: string;
-  };
-  metaData: {
-    hostedBy: string;
-    budget: number;
-  };
+  division: string;
+  district: string;
+  hostedBy: HostedBy;
+  places: string[];
+  budget: number;
+  description: string;
+  createdAt: string;
 }

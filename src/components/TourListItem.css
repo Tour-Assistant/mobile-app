@@ -20,7 +20,7 @@ ion-item p {
   width: 95%;
 }
 
-ion-item .date {
+ion-item .right-item {
   float: right;
   align-items: center;
   display: flex;

@@ -1,6 +1,16 @@
-import { IonItem, IonLabel, IonNote } from "@ionic/react";
-import { Tour } from "../types/tourType";
-import "./TourListItem.css";
+import {
+  IonItem,
+  IonLabel,
+  IonNote,
+  IonText,
+  IonChip,
+  IonIcon
+} from '@ionic/react';
+import moment from 'moment';
+import _ from 'lodash';
+
+import { Tour } from '../types/tourType';
+import './TourListItem.css';
 
 interface TourListItemProps {
   tour: Tour;
@@ -9,24 +19,15 @@ interface TourListItemProps {
 const TourListItem: React.FC<TourListItemProps> = ({ tour }) => {
   return (
     <IonItem routerLink={`/tour/${tour.id}`} detail={false}>
-      <div slot="start" className="dot dot-unread"></div>
-      <IonLabel className="ion-text-wrap">
+      <div slot='start' className='dot dot-unread'></div>
+      <IonLabel className='ion-text-wrap'>
         <h2>
           {tour.title}
-          <span className="date">
-            <IonNote>{tour.title}</IonNote>
-          </span>
+          <IonNote className='right-item'>
+            {moment(tour.startAt).format('dddd, Do MMMM')}
+          </IonNote>
         </h2>
-        <h3>{tour.title}</h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        <IonNote className='right-item'>{tour.budget} Taka</IonNote>
       </IonLabel>
     </IonItem>
   );

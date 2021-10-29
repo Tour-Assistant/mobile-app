@@ -25,6 +25,7 @@
     "axios": "^0.22.0",
     "ionicons": "^5.4.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.5",
@@ -72,7 +73,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.2.4"
+    "@capacitor/cli": "3.2.4",
+    "@types/lodash": "^4.14.176"
   },
   "description": "An Ionic project"
 }

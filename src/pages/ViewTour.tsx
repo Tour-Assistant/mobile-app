@@ -1,31 +1,35 @@
-import { useState } from "react";
-import { getTour } from "../data/tours";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
-import TourListItem from "../components/TourListItem";
-import {
-  setTourList,
-  updateTourList,
-  setSelectedTour,
-  fetchTourList,
-} from "../reducer/tourReducer";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
+  IonChip,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonNote,
   IonPage,
+  IonRow,
   IonToolbar,
-  useIonViewWillEnter,
-} from "@ionic/react";
-import { personCircle } from "ionicons/icons";
-import { useParams } from "react-router";
-import "./ViewTour.css";
-import { Tour } from "../types/tourType";
+  useIonViewWillEnter
+} from '@ionic/react';
+import { airplane } from 'ionicons/icons';
+import moment from 'moment';
+import { useParams } from 'react-router';
+import _ from 'lodash';
+
+import { RootState } from '../store';
+import {
+  setSelectedHostedBy,
+  setSelectedTour,
+  setShowContactModal
+} from '../reducer/tourReducer';
+import './ViewTour.css';
+import { Contact } from '../components/shared/Contact';
 
 function ViewTour() {
   const { id } = useParams<{ id: string }>();
@@ -38,11 +42,14 @@ function ViewTour() {
   });
 
   return (
-    <IonPage id="view-tour-page">
+    <IonPage id='view-tour-page'>
       <IonHeader translucent>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton text="Inbox" defaultHref="/home"></IonBackButton>
+          <IonButtons slot='start'>
+            <IonBackButton
+              text='Go To Tour List'
+              defaultHref='/home'
+            ></IonBackButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -51,35 +58,53 @@ function ViewTour() {
         {selectedTour ? (
           <>
             <IonItem>
-              <IonIcon icon={personCircle} color="primary"></IonIcon>
-              <IonLabel className="ion-text-wrap">
+              <IonIcon icon={airplane}></IonIcon>
+              <IonLabel className='ion-text-wrap'>
                 <h2>
                   {selectedTour.title}
-                  <span className="date">
-                    <IonNote>{selectedTour.title}</IonNote>
-                  </span>
+                  <IonNote className='right-item'>
+                    {moment(selectedTour.startAt).format('dddd, Do MMMM')}
+                  </IonNote>
                 </h2>
-                <h3>
-                  To: <IonNote>Me</IonNote>
-                </h3>
+                <IonNote className='right-item'>
+                  {selectedTour.budget} Taka
+                </IonNote>
+                {_.map(selectedTour.places, (place: string) => (
+                  <IonChip color='primary'>
+                    <IonLabel>{place}</IonLabel>
+                  </IonChip>
+                ))}
               </IonLabel>
             </IonItem>
 
-            <div className="ion-padding">
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonButton expand='block'>Go to the Link</IonButton>
+                </IonCol>
+                <IonCol>
+                  <IonButton
+                    expand='block'
+                    color='warning'
+                    onClick={() => {
+                      dispatch(setShowContactModal(true));
+                      dispatch(setSelectedHostedBy(selectedTour.hostedBy));
+                    }}
+                  >
+                    Call For Booking
+                  </IonButton>
+                  <Contact />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
+            <div className='ion-padding'>
               <h1>{selectedTour.title}</h1>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
+              <p>{selectedTour.description}</p>
             </div>
           </>
         ) : (
-          <div>Message not found</div>
+          <div>Tour details not found</div>
         )}
       </IonContent>
     </IonPage>
