@@ -53,11 +53,15 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <IonList>
-          {tourList.map(tour => (
-            <TourListItem key={tour.id} tour={tour} />
-          ))}
-        </IonList>
+        {status === 'SUCCEED' ? (
+          <IonList>
+            {tourList.map(tour => (
+              <TourListItem key={tour.id} tour={tour} />
+            ))}
+          </IonList>
+        ) : (
+          `Loading... Please Wait (${status}).`
+        )}
       </IonContent>
     </IonPage>
   );

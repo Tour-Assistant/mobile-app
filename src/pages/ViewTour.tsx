@@ -80,7 +80,14 @@ function ViewTour() {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <IonButton expand='block'>Go to the Link</IonButton>
+                  <IonButton
+                    expand='block'
+                    onClick={() =>
+                      window.open(selectedTour.reference, '_system')
+                    }
+                  >
+                    Go to the Link
+                  </IonButton>
                 </IonCol>
                 <IonCol>
                   <IonButton
