@@ -19,6 +19,7 @@ import {
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
+import FilterContainer from '../components/filtering/FilterContainer';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -39,10 +40,11 @@ const Home: React.FC = () => {
     <IonPage id='home-page'>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Upcoming Tour List</IonTitle>
+          <IonTitle>Upcoming Tour List 2</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <FilterContainer />
         <IonRefresher slot='fixed' onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>

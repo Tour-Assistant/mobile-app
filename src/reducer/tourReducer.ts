@@ -8,6 +8,7 @@ export interface TourState {
   selectedTour: Tour | undefined;
   selectedHostedBy: HostedBy | undefined;
   showContactModal: boolean;
+  searchText: string;
   status: 'SUCCEED' | 'LOADING' | 'ERROR' | 'FAILED' | '';
   error: string;
 }
@@ -18,6 +19,7 @@ const initialState: TourState = {
   selectedTour: undefined,
   selectedHostedBy: undefined,
   showContactModal: false,
+  searchText: '',
   status: '',
   error: ''
 };
@@ -55,6 +57,14 @@ export const tourSlice = createSlice({
     },
     setShowContactModal: (state, action: PayloadAction<boolean>) => {
       state.showContactModal = action.payload;
+    },
+    setSearchText: (state, action: PayloadAction<string>) => {
+      state.searchText = action.payload;
+      console.log(`action.payload: ${action.payload}`);
+      if (state.searchText) {
+        debugger;
+        state.filteredTourList = [];
+      }
     }
   },
   extraReducers: {
@@ -77,7 +87,8 @@ export const {
   updateTourList,
   setSelectedTour,
   setSelectedHostedBy,
-  setShowContactModal
+  setShowContactModal,
+  setSearchText
 } = tourSlice.actions;
 
 export default tourSlice.reducer;
