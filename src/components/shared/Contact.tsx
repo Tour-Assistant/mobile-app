@@ -1,4 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
+import _ from 'lodash';
+
 import { RootState } from '../../store';
 import {
   setShowContactModal,
@@ -17,7 +19,6 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/react';
-import _ from 'lodash';
 import { HostAuthority } from '../../types/tourType';
 
 export const Contact: React.FC = () => {

@@ -86,7 +86,7 @@ function ViewTour() {
                       window.open(selectedTour.reference, '_system')
                     }
                   >
-                    Go to the Link
+                    Original Link
                   </IonButton>
                 </IonCol>
                 <IonCol>

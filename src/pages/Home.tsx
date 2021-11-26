@@ -1,7 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
+
 import { RootState } from '../store';
 import TourListItem from '../components/TourListItem';
 import { fetchTourList, setSearchText } from '../reducer/tourReducer';
+import './Home.css';
+
 import {
   IonContent,
   IonHeader,
@@ -13,7 +16,6 @@ import {
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
-import './Home.css';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const Home: React.FC = () => {
           <IonSearchbar
             value={searchText}
             onIonChange={e => dispatch(setSearchText(e.detail.value!))}
+            placeholder='Search Upcoming Tours'
           ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
