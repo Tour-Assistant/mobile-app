@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "mobile-app",
+	"appName": "Tour Assistant",
 	"webDir": "build",
 	"bundledWebRuntime": false,
 	"linuxAndroidStudioPath": "/snap/android-studio/current/android-studio/bin/studio.sh",

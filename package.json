@@ -1,5 +1,5 @@
 {
-  "name": "mobile-app",
+  "name": "tour-assistant",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -54,7 +54,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "android": "cap run android"
+    "android": "react-scripts build && cap run android",
+    "add-resource": "cordova-res android --skip-config --copy"
   },
   "eslintConfig": {
     "extends": [
@@ -76,7 +77,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.2.4",
-    "@types/lodash": "^4.14.176"
+    "@types/lodash": "^4.14.176",
+    "cordova-res": "^0.15.3"
   },
   "description": "An Ionic project"
 }
