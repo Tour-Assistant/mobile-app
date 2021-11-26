@@ -1,12 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import TourListItem from '../components/TourListItem';
-import {
-  setTourList,
-  updateTourList,
-  setSelectedTour,
-  fetchTourList
-} from '../reducer/tourReducer';
+import { fetchTourList, setSearchText } from '../reducer/tourReducer';
 import {
   IonContent,
   IonHeader,
@@ -14,7 +9,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
+  IonSearchbar,
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
@@ -22,7 +17,7 @@ import './Home.css';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
-  const { tourList, status } = useSelector(
+  const { filteredTourList, status, searchText } = useSelector(
     (state: RootState) => state.tourState
   );
 
@@ -39,7 +34,10 @@ const Home: React.FC = () => {
     <IonPage id='home-page'>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Upcoming Tour List</IonTitle>
+          <IonSearchbar
+            value={searchText}
+            onIonChange={e => dispatch(setSearchText(e.detail.value!))}
+          ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -47,15 +45,9 @@ const Home: React.FC = () => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <IonHeader collapse='condense'>
-          <IonToolbar>
-            <IonTitle size='large'>Upcoming Tour List</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-
         {status === 'SUCCEED' ? (
           <IonList>
-            {tourList.map(tour => (
+            {filteredTourList.map(tour => (
               <TourListItem key={tour.id} tour={tour} />
             ))}
           </IonList>

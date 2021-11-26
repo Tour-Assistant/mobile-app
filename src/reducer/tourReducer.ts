@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { HostAuthority, HostedBy, Tour } from '../types/tourType';
+import _ from 'lodash';
+
+import { HostedBy, Tour } from '../types/tourType';
 
 export interface TourState {
   tourList: Tour[];
@@ -8,6 +10,7 @@ export interface TourState {
   selectedTour: Tour | undefined;
   selectedHostedBy: HostedBy | undefined;
   showContactModal: boolean;
+  searchText: string;
   status: 'SUCCEED' | 'LOADING' | 'ERROR' | 'FAILED' | '';
   error: string;
 }
@@ -18,6 +21,7 @@ const initialState: TourState = {
   selectedTour: undefined,
   selectedHostedBy: undefined,
   showContactModal: false,
+  searchText: '',
   status: '',
   error: ''
 };
@@ -55,15 +59,34 @@ export const tourSlice = createSlice({
     },
     setShowContactModal: (state, action: PayloadAction<boolean>) => {
       state.showContactModal = action.payload;
+    },
+    setSearchText: (state, action: PayloadAction<string>) => {
+      state.searchText = action.payload ?? '';
+      if (!state.searchText) {
+      } else {
+      }
+      state.filteredTourList = _.size(state.searchText)
+        ? _.filter(state.tourList, tour => {
+            const { title, description } = tour;
+            if (
+              title.toLowerCase().includes(action.payload.toLowerCase()) ||
+              description.toLowerCase().includes(action.payload.toLowerCase())
+            ) {
+              return true;
+            }
+            return false;
+          })
+        : state.tourList;
     }
   },
   extraReducers: {
-    [fetchTourList.pending.type]: (state, action) => {
+    [fetchTourList.pending.type]: state => {
       state.status = 'LOADING';
     },
     [fetchTourList.fulfilled.type]: (state, action) => {
       state.status = 'SUCCEED';
       state.tourList = action.payload;
+      state.filteredTourList = action.payload;
     },
     [fetchTourList.rejected.type]: (state, action) => {
       state.status = 'FAILED';
@@ -77,7 +100,8 @@ export const {
   updateTourList,
   setSelectedTour,
   setSelectedHostedBy,
-  setShowContactModal
+  setShowContactModal,
+  setSearchText
 } = tourSlice.actions;
 
 export default tourSlice.reducer;

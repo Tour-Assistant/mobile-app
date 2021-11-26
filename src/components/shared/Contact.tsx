@@ -1,35 +1,22 @@
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
-import TourListItem from '../TourListItem';
 import {
-  setTourList,
-  updateTourList,
-  setSelectedTour,
-  fetchTourList,
   setShowContactModal,
   setSelectedHostedBy
 } from '../../reducer/tourReducer';
 import {
   IonButton,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonModal,
   IonNote,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
-  IonRow,
   IonTitle,
-  IonToolbar,
-  useIonViewWillEnter
+  IonToolbar
 } from '@ionic/react';
-import { personCircle } from 'ionicons/icons';
 import _ from 'lodash';
 import { HostAuthority } from '../../types/tourType';
 
@@ -79,11 +66,3 @@ export const Contact: React.FC = () => {
     </IonModal>
   );
 };
-
-{
-  /* */
-}
-
-{
-  /* */
-}
