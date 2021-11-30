@@ -13,8 +13,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonSearchbar,
-  IonToolbar,
-  useIonViewWillEnter
+  IonToolbar
 } from '@ionic/react';
 
 const Home: React.FC = () => {
@@ -27,10 +26,6 @@ const Home: React.FC = () => {
     dispatch(fetchTourList());
     if (status !== 'LOADING') e.detail.complete();
   };
-
-  useIonViewWillEnter(() => {
-    dispatch(fetchTourList());
-  });
 
   return (
     <IonPage id='home-page'>

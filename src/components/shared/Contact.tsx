@@ -28,8 +28,17 @@ export const Contact: React.FC = () => {
     (state: RootState) => state.tourState
   );
 
+  const onDismissModal = () => {
+    dispatch(setShowContactModal(false));
+    dispatch(setSelectedHostedBy());
+  };
+
   return (
-    <IonModal isOpen={showContactModal} cssClass='my-custom-class'>
+    <IonModal
+      isOpen={showContactModal}
+      cssClass='my-custom-class'
+      onDidDismiss={onDismissModal}
+    >
       <IonPage id='contact-modal'>
         <IonHeader>
           <IonToolbar>
@@ -54,13 +63,7 @@ export const Contact: React.FC = () => {
             )}
           </IonList>
         </IonContent>
-        <IonButton
-          expand='full'
-          onClick={() => {
-            dispatch(setShowContactModal(false));
-            dispatch(setSelectedHostedBy());
-          }}
-        >
+        <IonButton expand='full' onClick={onDismissModal}>
           Back
         </IonButton>
       </IonPage>
