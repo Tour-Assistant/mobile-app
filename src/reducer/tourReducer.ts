@@ -4,13 +4,20 @@ import _ from 'lodash';
 
 import { HostedBy, Tour } from '../types/tourType';
 
+export interface FilterData {
+  groupId: string;
+}
+
 export interface TourState {
   tourList: Tour[];
   filteredTourList: Tour[];
+  groupList: HostedBy[];
   selectedTour: Tour | undefined;
   selectedHostedBy: HostedBy | undefined;
   showContactModal: boolean;
   searchText: string;
+  filterData: FilterData;
+  showFilter: boolean;
   status: 'SUCCEED' | 'LOADING' | 'ERROR' | 'FAILED' | '';
   error: string;
 }
@@ -18,10 +25,13 @@ export interface TourState {
 const initialState: TourState = {
   tourList: [],
   filteredTourList: [],
+  groupList: [],
   selectedTour: undefined,
   selectedHostedBy: undefined,
   showContactModal: false,
   searchText: '',
+  showFilter: false,
+  filterData: { groupId: 'all' },
   status: '',
   error: ''
 };
@@ -60,6 +70,9 @@ export const tourSlice = createSlice({
     setShowContactModal: (state, action: PayloadAction<boolean>) => {
       state.showContactModal = action.payload;
     },
+    setShowFilter: (state, action: PayloadAction<boolean>) => {
+      state.showFilter = action.payload;
+    },
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload ?? '';
       if (!state.searchText) {
@@ -77,6 +90,16 @@ export const tourSlice = createSlice({
             return false;
           })
         : state.tourList;
+    },
+    setFilterGroupId: (state, action: PayloadAction<HostedBy['id']>) => {
+      state.filterData = { groupId: action.payload };
+      state.filteredTourList =
+        _.isEmpty(action.payload) || action.payload === 'all'
+          ? state.tourList
+          : _.filter(
+              state.tourList,
+              tour => tour?.hostedBy?.id === action.payload
+            );
     }
   },
   extraReducers: {
@@ -87,6 +110,10 @@ export const tourSlice = createSlice({
       state.status = 'SUCCEED';
       state.tourList = action.payload;
       state.filteredTourList = action.payload;
+      state.groupList = _(action.payload)
+        .uniqBy('hostedBy.id')
+        .map(tour => tour.hostedBy)
+        .value();
     },
     [fetchTourList.rejected.type]: (state, action) => {
       state.status = 'FAILED';
@@ -101,7 +128,9 @@ export const {
   setSelectedTour,
   setSelectedHostedBy,
   setShowContactModal,
-  setSearchText
+  setShowFilter,
+  setSearchText,
+  setFilterGroupId
 } = tourSlice.actions;
 
 export default tourSlice.reducer;
