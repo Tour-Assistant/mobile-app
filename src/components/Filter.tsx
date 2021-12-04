@@ -19,7 +19,7 @@ export const Filter: React.FC = () => {
   } = useSelector((state: RootState) => state.tourState);
   return (
     <IonGrid>
-      <IonItem>
+      <IonItem color='tertiary'>
         <IonLabel>Filter With Group</IonLabel>
         <IonSelect
           value={groupId}

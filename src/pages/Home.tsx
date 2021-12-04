@@ -63,6 +63,7 @@ const Home: React.FC = () => {
                   <IonIcon
                     icon={funnel}
                     size='large'
+                    color='tertiary'
                     onClick={() => dispatch(setShowFilter(!showFilter))}
                   />
                 ) : (

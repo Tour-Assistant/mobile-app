@@ -35,6 +35,38 @@ const initialState: TourState = {
   status: '',
   error: ''
 };
+// { searchText: string; filterData: FilterData }
+const searchAndFilter = ({
+  searchText = '',
+  filterData = { groupId: 'all' },
+  tourList = []
+}: {
+  searchText: string;
+  filterData: FilterData;
+  tourList: Tour[];
+}): Tour[] => {
+  let filteredAndSearchedTourList = _.size(searchText)
+    ? _.filter(tourList, tour => {
+        const { title, description } = tour;
+        if (
+          title.toLowerCase().includes(searchText.toLowerCase()) ||
+          description.toLowerCase().includes(searchText.toLowerCase())
+        ) {
+          return true;
+        }
+        return false;
+      })
+    : tourList;
+
+  filteredAndSearchedTourList =
+    _.isEmpty(filterData.groupId) || filterData.groupId === 'all'
+      ? filteredAndSearchedTourList
+      : _.filter(
+          filteredAndSearchedTourList,
+          tour => tour?.hostedBy?.id === filterData.groupId
+        );
+  return filteredAndSearchedTourList;
+};
 
 export const fetchTourList = createAsyncThunk(
   'tours/fetchTourList',
@@ -75,31 +107,21 @@ export const tourSlice = createSlice({
     },
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload ?? '';
-      if (!state.searchText) {
-      } else {
-      }
-      state.filteredTourList = _.size(state.searchText)
-        ? _.filter(state.tourList, tour => {
-            const { title, description } = tour;
-            if (
-              title.toLowerCase().includes(action.payload.toLowerCase()) ||
-              description.toLowerCase().includes(action.payload.toLowerCase())
-            ) {
-              return true;
-            }
-            return false;
-          })
-        : state.tourList;
+      const { searchText, tourList, filterData } = state;
+      state.filteredTourList = searchAndFilter({
+        searchText: searchText,
+        tourList: tourList,
+        filterData: filterData
+      });
     },
     setFilterGroupId: (state, action: PayloadAction<HostedBy['id']>) => {
       state.filterData = { groupId: action.payload };
-      state.filteredTourList =
-        _.isEmpty(action.payload) || action.payload === 'all'
-          ? state.tourList
-          : _.filter(
-              state.tourList,
-              tour => tour?.hostedBy?.id === action.payload
-            );
+      const { searchText, tourList, filterData } = state;
+      state.filteredTourList = searchAndFilter({
+        searchText: searchText,
+        tourList: tourList,
+        filterData: filterData
+      });
     }
   },
   extraReducers: {
