@@ -3,18 +3,21 @@ import { RootState } from '../store';
 import TourListItem from '../components/TourListItem';
 import {
   fetchTourList,
+  setFilterGroupId,
   setSearchText,
   setShowFilter
 } from '../reducer/tourReducer';
 import './Home.css';
-import { funnel, funnelOutline } from 'ionicons/icons';
+import { closeCircle, funnel, funnelOutline } from 'ionicons/icons';
 
 import {
+  IonChip,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
   IonIcon,
+  IonLabel,
   IonList,
   IonPage,
   IonRefresher,
@@ -24,12 +27,18 @@ import {
   IonToolbar
 } from '@ionic/react';
 import { Filter } from '../components/Filter';
+import _ from 'lodash';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
-  const { filteredTourList, status, searchText, showFilter } = useSelector(
-    (state: RootState) => state.tourState
-  );
+  const {
+    filteredTourList,
+    status,
+    searchText,
+    showFilter,
+    filterData: { groupId },
+    groupList
+  } = useSelector((state: RootState) => state.tourState);
 
   const refresh = (e: CustomEvent) => {
     dispatch(fetchTourList());
@@ -65,6 +74,18 @@ const Home: React.FC = () => {
                 )}
               </IonCol>
             </IonRow>
+            {groupId !== 'all' && (
+              <IonRow>
+                <IonCol>
+                  <IonChip onClick={() => dispatch(setFilterGroupId('all'))}>
+                    <IonLabel>
+                      {_.find(groupList, group => group.id === groupId)?.name}
+                    </IonLabel>
+                    <IonIcon icon={closeCircle} />
+                  </IonChip>
+                </IonCol>
+              </IonRow>
+            )}
           </IonGrid>
         </IonToolbar>
       </IonHeader>

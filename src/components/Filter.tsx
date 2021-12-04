@@ -9,7 +9,7 @@ import {
 import { RootState } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
-import { setFilterGroupId } from '../reducer/tourReducer';
+import { setFilterGroupId, setShowFilter } from '../reducer/tourReducer';
 
 export const Filter: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,10 @@ export const Filter: React.FC = () => {
           value={groupId}
           okText='Okay'
           cancelText='Dismiss'
-          onIonChange={e => dispatch(setFilterGroupId(e.detail.value))}
+          onIonChange={e => {
+            dispatch(setFilterGroupId(e.detail.value));
+            dispatch(setShowFilter(false));
+          }}
         >
           <IonSelectOption value='all'>All</IonSelectOption>
           {_.map(groupList, group => (
