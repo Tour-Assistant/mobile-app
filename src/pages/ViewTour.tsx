@@ -15,7 +15,7 @@ import {
   IonPage,
   IonRow,
   IonToolbar,
-  useIonViewWillEnter
+  useIonViewWillEnter,
 } from '@ionic/react';
 import { airplane } from 'ionicons/icons';
 import moment from 'moment';
@@ -26,10 +26,11 @@ import { RootState } from '../store';
 import {
   setSelectedHostedBy,
   setSelectedTour,
-  setShowContactModal
+  setShowContactModal,
 } from '../reducer/tourReducer';
 import './ViewTour.css';
 import { Contact } from '../components/shared/Contact';
+import { useEffect } from 'react';
 
 function ViewTour() {
   const { id } = useParams<{ id: string }>();
@@ -37,18 +38,18 @@ function ViewTour() {
   const dispatch = useDispatch();
   const { selectedTour } = useSelector((state: RootState) => state.tourState);
 
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     dispatch(setSelectedTour(id));
-  });
+  }, []);
 
   return (
-    <IonPage id='view-tour-page'>
+    <IonPage id="view-tour-page">
       <IonHeader translucent>
         <IonToolbar>
-          <IonButtons slot='start'>
+          <IonButtons slot="start">
             <IonBackButton
-              text='Go To Tour List'
-              defaultHref='/home'
+              text="Go To Tour List"
+              defaultHref="/home"
             ></IonBackButton>
           </IonButtons>
         </IonToolbar>
@@ -59,18 +60,18 @@ function ViewTour() {
           <>
             <IonItem>
               <IonIcon icon={airplane}></IonIcon>
-              <IonLabel className='ion-text-wrap'>
+              <IonLabel className="ion-text-wrap">
                 <h2>
                   {selectedTour.title}
-                  <IonNote className='right-item'>
+                  <IonNote className="right-item">
                     {moment(selectedTour.startAt).format('dddd, Do MMMM')}
                   </IonNote>
                 </h2>
-                <IonNote className='right-item'>
+                <IonNote className="right-item">
                   {selectedTour.budget} Taka
                 </IonNote>
                 {_.map(selectedTour.places, (place: string) => (
-                  <IonChip color='primary'>
+                  <IonChip color="primary">
                     <IonLabel>{place}</IonLabel>
                   </IonChip>
                 ))}
@@ -81,7 +82,7 @@ function ViewTour() {
               <IonRow>
                 <IonCol>
                   <IonButton
-                    expand='block'
+                    expand="block"
                     onClick={() =>
                       window.open(selectedTour.reference, '_system')
                     }
@@ -91,8 +92,8 @@ function ViewTour() {
                 </IonCol>
                 <IonCol>
                   <IonButton
-                    expand='block'
-                    color='warning'
+                    expand="block"
+                    color="warning"
                     onClick={() => {
                       dispatch(setShowContactModal(true));
                       dispatch(setSelectedHostedBy(selectedTour.hostedBy));
@@ -105,7 +106,7 @@ function ViewTour() {
               </IonRow>
             </IonGrid>
 
-            <div className='ion-padding'>
+            <div className="ion-padding">
               <h1>{selectedTour.title}</h1>
               <p>{selectedTour.description}</p>
             </div>
