@@ -11,8 +11,9 @@ import { Route, Redirect } from 'react-router';
 import { calendar, location, informationCircle, people } from 'ionicons/icons';
 import Home from './Home';
 import { TourEvents } from './TourEvents';
+import { SessionList } from '../components/SessionList';
+import { SchedulePage } from './SchedulePage';
 
-const SchedulePage = () => <div>Schedule</div>;
 const SessionDetail = () => <div>SessionDetail</div>;
 const About = () => <div>About</div>;
 
@@ -29,7 +30,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
         */}
         <Route
           path="/tourEvents/eventList"
-          render={() => <TourEvents />}
+          render={() => <SchedulePage />}
           exact={true}
         />
       </IonRouterOutlet>
