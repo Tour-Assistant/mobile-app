@@ -6,14 +6,15 @@ import {
   IonItemOptions,
   IonItemOption,
 } from '@ionic/react';
+import { Tour } from '../types/tourType';
 
-export const SessionListItem: React.FC = ({}) => {
+export const EventListItem: React.FC<{ tour: Tour }> = ({ tour }) => {
   return (
     <IonItemSliding>
       <IonItem routerLink={`/tabs/schedule`}>
         <IonLabel>
-          <h3>Sesson Name</h3>
-          <p>time start&mdash;&nbsp; time start&mdash;&nbsp; location</p>
+          <h3>{tour.title}</h3>
+          <p>By&nbsp; {tour.hostedBy.name}</p>
         </IonLabel>
       </IonItem>
       <IonItemOptions>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import _ from 'lodash';
 
 import {
   IonToolbar,
@@ -18,17 +19,30 @@ import {
 } from '@ionic/react';
 // import { options, menu } from 'ionicons/icons';
 
-import './EventList.scss';
-import { SessionList } from '../components/SessionList';
-import { useDispatch } from 'react-redux';
+import './EventPage.scss';
+import { EventList } from '../components/EventList';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchTourList } from '../reducer/tourReducer';
+import { RootState } from '../store';
 
-export const EventList: React.FC = () => {
+export const EventPage: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchTourList());
   }, []);
+
+  const { filteredTourList } = useSelector(
+    (state: RootState) => state.tourState
+  );
+
+  console.log(
+    _.each(_.groupBy(filteredTourList, 'startAt'), (val, key) => {
+      console.log(`key: ${key}`);
+      console.log(val);
+      console.log('---------');
+    })
+  );
 
   const [segment, setSegment] = useState<'all' | 'favorites'>('all');
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
@@ -94,8 +108,7 @@ export const EventList: React.FC = () => {
           onDidDismiss={() => setShowCompleteToast(false)}
         />
 
-        <SessionList />
-        <SessionList />
+        <EventList />
       </IonContent>
     </IonPage>
   );
