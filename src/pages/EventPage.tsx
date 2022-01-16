@@ -57,7 +57,7 @@ export const EventPage: React.FC = () => {
             value={segment}
             onIonChange={(e) => setSegment(e.detail.value as any)}
           >
-            <IonSegmentButton value="all">Upcoming Events</IonSegmentButton>
+            <IonSegmentButton value="all">Upcoming Tours</IonSegmentButton>
           </IonSegment>
           {/* <IonButtons slot="end">
             <IonButton>
@@ -67,7 +67,7 @@ export const EventPage: React.FC = () => {
         </IonToolbar>
         <IonToolbar>
           <IonSearchbar
-            placeholder="Search Events"
+            placeholder="Search Tour"
             onIonChange={(e) => dispatch(setSearchText(e.detail.value!))}
           ></IonSearchbar>
         </IonToolbar>
@@ -76,7 +76,7 @@ export const EventPage: React.FC = () => {
       <IonContent fullscreen={true}>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Schedule</IonTitle>
+            <IonTitle size="large">Tour</IonTitle>
           </IonToolbar>
           <IonToolbar>
             <IonSearchbar placeholder="Search"></IonSearchbar>

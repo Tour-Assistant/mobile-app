@@ -11,7 +11,7 @@ import { Tour } from '../types/tourType';
 export const EventListItem: React.FC<{ tour: Tour }> = ({ tour }) => {
   return (
     <IonItemSliding>
-      <IonItem routerLink={`/tabs/schedule`}>
+      <IonItem routerLink={`/tabs/events/${tour.id}`}>
         <IonLabel>
           <h3>{tour.title}</h3>
           <p>By&nbsp; {tour.hostedBy.name}</p>

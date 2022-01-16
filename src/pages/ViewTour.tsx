@@ -49,7 +49,7 @@ function ViewTour() {
           <IonButtons slot="start">
             <IonBackButton
               text="Go To Tour List"
-              defaultHref="/home"
+              defaultHref="/tabs/events"
             ></IonBackButton>
           </IonButtons>
         </IonToolbar>
