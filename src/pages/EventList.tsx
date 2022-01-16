@@ -1,39 +1,40 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import {
   IonToolbar,
   IonContent,
   IonPage,
-  IonButtons,
+  // IonButtons,
   IonTitle,
-  IonMenuButton,
   IonSegment,
   IonSegmentButton,
-  IonButton,
-  IonIcon,
+  // IonButton,
+  // IonIcon,
   IonSearchbar,
   IonRefresher,
   IonRefresherContent,
   IonToast,
-  IonModal,
   IonHeader,
-  getConfig,
 } from '@ionic/react';
-import { options, search, menu } from 'ionicons/icons';
+// import { options, menu } from 'ionicons/icons';
 
-import './SchedulePage.scss';
+import './EventList.scss';
 import { SessionList } from '../components/SessionList';
+import { useDispatch } from 'react-redux';
+import { fetchTourList } from '../reducer/tourReducer';
 
-export const SchedulePage: React.FC = () => {
+export const EventList: React.FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTourList());
+  }, []);
+
   const [segment, setSegment] = useState<'all' | 'favorites'>('all');
-  const [showSearchbar, setShowSearchbar] = useState<boolean>(true);
-  const [showFilterModal, setShowFilterModal] = useState(false);
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
 
   const pageRef = useRef<HTMLElement>(null);
-
-  const ios = true;
 
   const doRefresh = () => {
     setTimeout(() => {
@@ -46,22 +47,22 @@ export const SchedulePage: React.FC = () => {
     <IonPage ref={pageRef} id="schedule-page">
       <IonHeader translucent={true}>
         <IonToolbar>
-          <IonButtons slot="start">
+          {/* <IonButtons slot="start">
             <IonButton>
               <IonIcon slot="icon-only" icon={menu}></IonIcon>
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
           <IonSegment
             value={segment}
             onIonChange={(e) => setSegment(e.detail.value as any)}
           >
             <IonSegmentButton value="all">Upcoming Events</IonSegmentButton>
           </IonSegment>
-          <IonButtons slot="end">
+          {/* <IonButtons slot="end">
             <IonButton>
               <IonIcon icon={options} slot="icon-only" />
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
         </IonToolbar>
         <IonToolbar>
           <IonSearchbar placeholder="Search"></IonSearchbar>

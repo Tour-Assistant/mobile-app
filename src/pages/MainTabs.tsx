@@ -8,14 +8,8 @@ import {
   IonLabel,
 } from '@ionic/react';
 import { Route, Redirect } from 'react-router';
-import { calendar, location, informationCircle, people } from 'ionicons/icons';
-import Home from './Home';
-import { TourEvents } from './TourEvents';
-import { SessionList } from '../components/SessionList';
-import { SchedulePage } from './SchedulePage';
-
-const SessionDetail = () => <div>SessionDetail</div>;
-const About = () => <div>About</div>;
+import { calendar, people } from 'ionicons/icons';
+import { EventList } from './EventList';
 
 interface MainTabsProps {}
 
@@ -23,16 +17,8 @@ const MainTabs: React.FC<MainTabsProps> = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Redirect exact path="/tourEvents" to="/tourEvents/eventList" />
-        {/*
-          Using the render method prop cuts down the number of renders your components will have due to route changes.
-          Use the component prop when your component depends on the RouterComponentProps passed in automatically.
-        */}
-        <Route
-          path="/tourEvents/eventList"
-          render={() => <SchedulePage />}
-          exact={true}
-        />
+        <Redirect exact path="/tabs" to="/tabs/events" />
+        <Route path="/tabs/events" render={() => <EventList />} exact={true} />
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="schedule" href="/tourEvents/eventList">
@@ -42,14 +28,6 @@ const MainTabs: React.FC<MainTabsProps> = () => {
         <IonTabButton tab="speakers" href="/tabs/speakers">
           <IonIcon icon={people} />
           <IonLabel>Groups</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="map" href="/tabs/map">
-          <IonIcon icon={location} />
-          <IonLabel>Map</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="about" href="/tabs/about">
-          <IonIcon icon={informationCircle} />
-          <IonLabel>About</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>

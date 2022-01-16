@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import ViewTour from './pages/ViewTour';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,11 +39,10 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
+            <Route path="/tabs" render={() => <MainTabs />} />
             <Route path="/" exact={true}>
-              <Redirect to="/tourEvents" />
+              <Redirect to="/tabs/events" />
             </Route>
-            <Route path="/tour/:id" render={ViewTour}></Route>
-            <Route path="/tourEvents" component={MainTabs} exact />
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
