@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
 import ViewTour from './pages/ViewTour';
 
 /* Core CSS required for Ionic components to work properly */
@@ -26,6 +25,7 @@ import './theme/variables.css';
 import { useDispatch } from 'react-redux';
 import { fetchTourList } from './reducer/tourReducer';
 import MainTabs from './pages/MainTabs';
+import { Menu } from './components/Menu';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,11 +38,8 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
+          <Menu />
           <IonRouterOutlet id="main">
-            {/*
-                We use IonRoute here to keep the tabs state intact,
-                which makes transitions between tabs and non tab pages smooth
-                */}
             <Route path="/" exact={true}>
               <Redirect to="/tourEvents" />
             </Route>
@@ -52,22 +49,6 @@ const App: React.FC = () => {
         </IonSplitPane>
       </IonReactRouter>
     </IonApp>
-
-    // <IonApp>
-    //   <IonReactRouter>
-    //     <IonRouterOutlet>
-    //       <Route path='/' exact={true}>
-    //         <Redirect to='/home' />
-    //       </Route>
-    //       <Route path='/home' exact={true}>
-    //         <Home />
-    //       </Route>
-    //       <Route path='/tour/:id'>
-    //         <ViewTour />
-    //       </Route>
-    //     </IonRouterOutlet>
-    //   </IonReactRouter>
-    // </IonApp>
   );
 };
 

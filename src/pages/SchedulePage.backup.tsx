@@ -55,7 +55,8 @@ export const SchedulePage: React.FC = () => {
             value={segment}
             onIonChange={(e) => setSegment(e.detail.value as any)}
           >
-            <IonSegmentButton value="all">Upcoming Events</IonSegmentButton>
+            <IonSegmentButton value="all">All</IonSegmentButton>
+            <IonSegmentButton value="favorites">Favorites</IonSegmentButton>
           </IonSegment>
           <IonButtons slot="end">
             <IonButton>
