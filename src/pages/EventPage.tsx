@@ -21,9 +21,8 @@ import {
 
 import './EventPage.scss';
 import { EventList } from '../components/EventList';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTourList } from '../reducer/tourReducer';
-import { RootState } from '../store';
+import { useDispatch } from 'react-redux';
+import { fetchTourList, setSearchText } from '../reducer/tourReducer';
 
 export const EventPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,18 +30,6 @@ export const EventPage: React.FC = () => {
   useEffect(() => {
     dispatch(fetchTourList());
   }, []);
-
-  const { filteredTourList } = useSelector(
-    (state: RootState) => state.tourState
-  );
-
-  console.log(
-    _.each(_.groupBy(filteredTourList, 'startAt'), (val, key) => {
-      console.log(`key: ${key}`);
-      console.log(val);
-      console.log('---------');
-    })
-  );
 
   const [segment, setSegment] = useState<'all' | 'favorites'>('all');
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
@@ -79,7 +66,10 @@ export const EventPage: React.FC = () => {
           </IonButtons> */}
         </IonToolbar>
         <IonToolbar>
-          <IonSearchbar placeholder="Search"></IonSearchbar>
+          <IonSearchbar
+            placeholder="Search Events"
+            onIonChange={(e) => dispatch(setSearchText(e.detail.value!))}
+          ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
 
