@@ -12,6 +12,7 @@ export interface TourState {
   tourList: Tour[];
   filteredTourList: Tour[];
   groupList: HostedBy[];
+  filteredGroupList: HostedBy[];
   selectedTour: Tour | undefined;
   selectedHostedBy: HostedBy | undefined;
   showContactModal: boolean;
@@ -26,6 +27,7 @@ const initialState: TourState = {
   tourList: [],
   filteredTourList: [],
   groupList: [],
+  filteredGroupList: [],
   selectedTour: undefined,
   selectedHostedBy: undefined,
   showContactModal: false,
@@ -33,20 +35,20 @@ const initialState: TourState = {
   showFilter: false,
   filterData: { groupId: 'all' },
   status: '',
-  error: ''
+  error: '',
 };
 // { searchText: string; filterData: FilterData }
 const searchAndFilter = ({
   searchText = '',
   filterData = { groupId: 'all' },
-  tourList = []
+  tourList = [],
 }: {
   searchText: string;
   filterData: FilterData;
   tourList: Tour[];
 }): Tour[] => {
   let filteredAndSearchedTourList = _.size(searchText)
-    ? _.filter(tourList, tour => {
+    ? _.filter(tourList, (tour) => {
         const { title, description } = tour;
         if (
           title.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -63,7 +65,7 @@ const searchAndFilter = ({
       ? filteredAndSearchedTourList
       : _.filter(
           filteredAndSearchedTourList,
-          tour => tour?.hostedBy?.id === filterData.groupId
+          (tour) => tour?.hostedBy?.id === filterData.groupId
         );
   return filteredAndSearchedTourList;
 };
@@ -75,6 +77,16 @@ export const fetchTourList = createAsyncThunk(
       'https://tour-api.my-tour-assistant.com/v1/tours'
     );
     return response.data as Tour[];
+  }
+);
+
+export const fetchGroupList = createAsyncThunk(
+  'tours/fetchGroupList',
+  async () => {
+    const response = await axios.get(
+      'https://host-api.my-tour-assistant.com/v1/hosts'
+    );
+    return response.data as HostedBy[];
   }
 );
 
@@ -111,7 +123,7 @@ export const tourSlice = createSlice({
       state.filteredTourList = searchAndFilter({
         searchText: searchText,
         tourList: tourList,
-        filterData: filterData
+        filterData: filterData,
       });
     },
     setFilterGroupId: (state, action: PayloadAction<HostedBy['id']>) => {
@@ -120,28 +132,37 @@ export const tourSlice = createSlice({
       state.filteredTourList = searchAndFilter({
         searchText: searchText,
         tourList: tourList,
-        filterData: filterData
+        filterData: filterData,
       });
-    }
+    },
   },
   extraReducers: {
-    [fetchTourList.pending.type]: state => {
+    [fetchTourList.pending.type]: (state) => {
       state.status = 'LOADING';
     },
     [fetchTourList.fulfilled.type]: (state, action) => {
       state.status = 'SUCCEED';
       state.tourList = action.payload;
       state.filteredTourList = action.payload;
-      state.groupList = _(action.payload)
-        .uniqBy('hostedBy.id')
-        .map(tour => tour.hostedBy)
-        .value();
     },
     [fetchTourList.rejected.type]: (state, action) => {
       state.status = 'FAILED';
       state.error = action.error.message;
-    }
-  }
+    },
+
+    [fetchGroupList.pending.type]: (state) => {
+      state.status = 'LOADING';
+    },
+    [fetchGroupList.fulfilled.type]: (state, action) => {
+      state.status = 'SUCCEED';
+      state.groupList = action.payload;
+      state.filteredGroupList = action.payload;
+    },
+    [fetchGroupList.rejected.type]: (state, action) => {
+      state.status = 'FAILED';
+      state.error = action.error.message;
+    },
+  },
 });
 
 export const {
@@ -152,7 +173,7 @@ export const {
   setShowContactModal,
   setShowFilter,
   setSearchText,
-  setFilterGroupId
+  setFilterGroupId,
 } = tourSlice.actions;
 
 export default tourSlice.reducer;
