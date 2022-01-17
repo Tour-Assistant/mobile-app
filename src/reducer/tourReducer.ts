@@ -49,10 +49,13 @@ const searchAndFilter = ({
 }): Tour[] => {
   let filteredAndSearchedTourList = _.size(searchText)
     ? _.filter(tourList, (tour) => {
-        const { title, description } = tour;
+        const { title, description, places, hostedBy } = tour;
+        searchText = searchText.toLowerCase().trim();
         if (
-          title.toLowerCase().includes(searchText.toLowerCase()) ||
-          description.toLowerCase().includes(searchText.toLowerCase())
+          title.toLowerCase().includes(searchText) ||
+          description.toLowerCase().includes(searchText) ||
+          places.some((place) => place.toLowerCase().includes(searchText)) ||
+          hostedBy.name.toLowerCase().includes(searchText)
         ) {
           return true;
         }
