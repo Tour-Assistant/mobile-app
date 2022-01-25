@@ -16,17 +16,14 @@ import {
   IonRefresherContent,
   IonToast,
   IonHeader,
+  IonIcon,
+  IonButton,
 } from '@ionic/react';
 // import { options, menu } from 'ionicons/icons';
 
 import './GroupPage.scss';
-import { EventList } from '../components/EventList';
 import { useDispatch } from 'react-redux';
-import {
-  fetchGroupList,
-  fetchTourList,
-  setSearchText,
-} from '../reducer/tourReducer';
+import { fetchGroupList } from '../reducer/tourReducer';
 import { GroupList } from '../components/GroupList';
 
 export const GroupPage: React.FC = () => {
@@ -36,17 +33,14 @@ export const GroupPage: React.FC = () => {
     dispatch(fetchGroupList());
   }, []);
 
-  const [segment, setSegment] = useState<'all' | 'favorites'>('all');
+  const [segment, setSegment] = useState<'all' | 'favorites'>('favorites');
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
   const [showCompleteToast, setShowCompleteToast] = useState(false);
 
   const pageRef = useRef<HTMLElement>(null);
 
   const doRefresh = () => {
-    setTimeout(() => {
-      ionRefresherRef.current!.complete();
-      setShowCompleteToast(true);
-    }, 2500);
+    dispatch(fetchGroupList);
   };
 
   return (
@@ -57,8 +51,10 @@ export const GroupPage: React.FC = () => {
             value={segment}
             onIonChange={(e) => setSegment(e.detail.value as any)}
           >
+            <IonSegmentButton value="favorites">
+              Editors Choice
+            </IonSegmentButton>
             <IonSegmentButton value="all">All Groups</IonSegmentButton>
-            {/* <IonSegmentButton value="favorite">Editors Choice</IonSegmentButton> */}
           </IonSegment>
         </IonToolbar>
       </IonHeader>
@@ -88,7 +84,7 @@ export const GroupPage: React.FC = () => {
           onDidDismiss={() => setShowCompleteToast(false)}
         />
 
-        <GroupList />
+        <GroupList segment={segment} />
       </IonContent>
     </IonPage>
   );

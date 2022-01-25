@@ -22,7 +22,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { useDispatch } from 'react-redux';
-import { fetchTourList } from './reducer/tourReducer';
+import { fetchGroupList, fetchTourList } from './reducer/tourReducer';
 import MainTabs from './pages/MainTabs';
 import { Menu } from './components/Menu';
 
@@ -31,6 +31,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchTourList());
+    dispatch(fetchGroupList());
   }, []);
 
   return (

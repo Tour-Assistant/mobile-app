@@ -1,11 +1,20 @@
-import { IonItemDivider, IonItemGroup, IonLabel, IonList } from '@ionic/react';
+import {
+  IonItemDivider,
+  IonItemGroup,
+  IonLabel,
+  IonList,
+  IonButton,
+  IonIcon,
+} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { informationCircle } from 'ionicons/icons';
 import moment from 'moment';
 import _ from 'lodash';
 import { RootState } from '../store';
 import { EventListItem } from './EventListItem';
 import { Tour } from '../types/tourType';
+import { fetchTourList } from '../reducer/tourReducer';
 
 interface FormattedTourType {
   tourList: Tour[];
@@ -13,6 +22,7 @@ interface FormattedTourType {
 }
 
 export const EventList: React.FC = () => {
+  const dispatch = useDispatch();
   const { filteredTourList } = useSelector(
     (state: RootState) => state.tourState
   );
@@ -43,6 +53,19 @@ export const EventList: React.FC = () => {
           ))}
         </IonItemGroup>
       ))}
+      {_.size(filteredTourList) === 0 && (
+        <>
+          <IonIcon icon={informationCircle}></IonIcon> Please check your
+          internet connection!
+          <IonButton
+            color="dark"
+            expand="block"
+            onClick={() => dispatch(fetchTourList())}
+          >
+            Try Again
+          </IonButton>
+        </>
+      )}
     </IonList>
   );
 };

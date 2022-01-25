@@ -12,6 +12,7 @@ export interface TourState {
   tourList: Tour[];
   filteredTourList: Tour[];
   groupList: HostedBy[];
+  editorsChoiceGroupList: HostedBy[];
   filteredGroupList: HostedBy[];
   selectedTour: Tour | undefined;
   selectedHostedBy: HostedBy | undefined;
@@ -27,6 +28,7 @@ const initialState: TourState = {
   tourList: [],
   filteredTourList: [],
   groupList: [],
+  editorsChoiceGroupList: [],
   filteredGroupList: [],
   selectedTour: undefined,
   selectedHostedBy: undefined,
@@ -49,13 +51,23 @@ const searchAndFilter = ({
 }): Tour[] => {
   let filteredAndSearchedTourList = _.size(searchText)
     ? _.filter(tourList, (tour) => {
-        const { title, description, places, hostedBy } = tour;
+        const {
+          title,
+          description,
+          places,
+          hostedBy,
+          curatedTitle = '',
+        } = tour;
         searchText = searchText.toLowerCase().trim();
         if (
           title.toLowerCase().includes(searchText) ||
+          (_.size(curatedTitle) &&
+            curatedTitle.toLowerCase().includes(searchText)) ||
           description.toLowerCase().includes(searchText) ||
           places.some((place) => place.toLowerCase().includes(searchText)) ||
-          hostedBy.name.toLowerCase().includes(searchText)
+          hostedBy.name.toLowerCase().includes(searchText) ||
+          (_.size(hostedBy.curatedName) &&
+            hostedBy.curatedName.toLowerCase().includes(searchText))
         ) {
           return true;
         }
@@ -160,6 +172,9 @@ export const tourSlice = createSlice({
       state.status = 'SUCCEED';
       state.groupList = action.payload;
       state.filteredGroupList = action.payload;
+      state.editorsChoiceGroupList = action.payload.filter(
+        (group: HostedBy) => group.isFavorite
+      );
     },
     [fetchGroupList.rejected.type]: (state, action) => {
       state.status = 'FAILED';

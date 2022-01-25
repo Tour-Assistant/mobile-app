@@ -38,10 +38,7 @@ export const EventPage: React.FC = () => {
   const pageRef = useRef<HTMLElement>(null);
 
   const doRefresh = () => {
-    setTimeout(() => {
-      ionRefresherRef.current!.complete();
-      setShowCompleteToast(true);
-    }, 2500);
+    dispatch(fetchTourList());
   };
 
   return (

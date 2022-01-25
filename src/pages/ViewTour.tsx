@@ -108,7 +108,9 @@ function ViewTour() {
 
             <div className="ion-padding">
               <h1>{selectedTour.title}</h1>
-              <p>{selectedTour.description}</p>
+              {selectedTour.description.split('\n').map((str) => (
+                <p>{str}</p>
+              ))}
             </div>
           </>
         ) : (
